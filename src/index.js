@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import Client from "./Client";
 import ClientForm from "./ClientForm";
 
-import "./styles.css";
 
 class App extends React.Component {
     state = {
