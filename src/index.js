@@ -1,54 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Client from "./Client";
 import ClientForm from "./ClientForm";
+import Counter from "./Counter"
 
 
-class App extends React.Component {
-    state = {
-        clients: [
+const App = () => {
+    const [clients, setClients] = useState([
             { id: 1, nom: "Theo fernandez" },
             { id: 2, nom: "Bryan nuninger" },
             { id: 3, nom: "Julien risacher"}
-        ]
+        ]);
+
+    const handleDelete = id => {
+        const updatedClients = [...clients];
+        const index = updatedClients.findIndex(client => client.id === id);
+
+        updatedClients.splice(index, 1);
+
+        setClients(updatedClients);
     };
 
-    handleDelete = id => {
-        const clients = [...this.state.clients];
-        const index = clients.findIndex(client => client.id === id);
+    const handleAdd = client => {
+        const updatedClients = [...clients];
+        updatedClients.push(client);
 
-        clients.splice(index, 1);
-
-        this.setState({ clients });
+        setClients(updatedClients);
     };
 
-    handleAdd = client => {
-        const clients = [...this.state.clients];
-        clients.push(client);
-
-        this.setState({ clients });
-    };
-
-    render() {
         const title = "Liste des clients";
 
         return (
             <div>
                 <h1>{title}</h1>
+                <Counter />
                 <ul>
-                    {this.state.clients.map(client => (
+                    {clients.map(client => (
                         <Client
                             key={client.id}
                             details={client}
-                            onDelete={this.handleDelete}
+                            onDelete={handleDelete}
                         />
                     ))}
                 </ul>
-                <ClientForm onClientAdd={this.handleAdd} />
+                <ClientForm onClientAdd={handleAdd} />
             </div>
         )
     }
-}
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
